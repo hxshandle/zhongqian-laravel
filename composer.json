@@ -1,0 +1,20 @@
+{
+  "name": "hxshandle/zhongqian-laravel",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Handle Huang",
+      "email": "handle.huang@outlook.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "laravel/framework": "5.2.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "HXS\\ZQ\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
