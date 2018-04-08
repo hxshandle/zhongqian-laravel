@@ -19,7 +19,7 @@ class ZhongQian
      */
     public function verifyUserId($realUserName, $userCardId)
     {
-        $url = 'http://'.config('zhongqian.zq_domain').'/a2e';
+        $url = 'http://' . config('zhongqian.zq_domain') . '/a2e';
         $postData = array(
             "zqid" => '',
             "name" => $realUserName,
@@ -51,12 +51,12 @@ class ZhongQian
         $sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
         $arr['sign_val'] = $sign_val;
         //得到结果
-        $url = 'http://'.config('zhongqian.zq_domain').'/personReg';
+        $url = 'http://' . config('zhongqian.zq_domain') . '/personReg';
         $content = Helper::curlPost($url, $arr);
         return $content;
     }
 
-    public function createContractByTempateId($templateId, $userCode, $json='')
+    public function createContractByTempateId($templateId, $userCode, $json = '')
     {
         //合同编号
         $contract_num = Helper::generateSN();
@@ -64,8 +64,8 @@ class ZhongQian
         $contract_name = config('zhongqian.zq_contract_name');
         $json_val = '{"jsonVal":[{"order_sn":"","first_part":"","second_part":"","id_number":"","second_part_phone":"","second_part_address":"","loan_date":"","borrow_amount":"","borrow_days":"","borrow_rate":"","repay_date":"","total_amount":"","Signer1":"","Signer2":"","Signer3":""}]}';
         $json_val = '{"jsonVal":[]}';
-        $arr=array(
-            "zqid"  => config('zhongqian.zqid'),  //众签唯一标示
+        $arr = array(
+            "zqid" => config('zhongqian.zqid'),  //众签唯一标示
             't_no' => $templateId,
             'no' => $contract_num,
             'name' => $contract_name,
@@ -73,8 +73,30 @@ class ZhongQian
         );
         $sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
         $arr['sign_val'] = $sign_val;
-        $url = 'http://'.config('zhongqian.zq_domain').'/pdfTemplate';
+        $url = 'http://' . config('zhongqian.zq_domain') . '/pdfTemplate';
         $content = Helper::curlPost($url, $arr);
         return $content;
+    }
+
+    public function showSign($contractNo, $signer)
+    {
+        $url = 'http://' . config('zhongqian.zq_domain') . '/signView';
+        $notify_url = config('zhongqian.show_sign_notify_callback');
+        $return_url = config('zhongqian.show_sign_return_url');
+        $SIGNATURECODE = "SIGNATURECODE";
+        $arr = array(
+            "zqid" => config('zhongqian.zqid'),  //众签唯一标示
+            'no' => $contractNo,
+            'user_code' => $signer,
+            'sign_type' => $SIGNATURECODE,
+            "notify_url" => $notify_url,   //异步回调
+            "return_url" => $return_url, //同步回调
+        );
+        $sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] = $sign_val;
+        return array(
+            "data" => $arr,
+            "url" => $url
+        );
     }
 }
