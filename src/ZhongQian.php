@@ -75,7 +75,10 @@ class ZhongQian
         $arr['sign_val'] = $sign_val;
         $url = 'http://' . config('zhongqian.zq_domain') . '/pdfTemplate';
         $content = Helper::curlPost($url, $arr);
-        return $content;
+        return array(
+            "contract_no" => $contract_num,
+            "create_status" => $content
+        );
     }
 
     public function showSign($contractNo, $signer)
