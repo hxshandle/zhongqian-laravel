@@ -27,7 +27,7 @@ class ZhongQian
         );
         $result = Helper::curlPost($url, $postData);
         // TODO 需要验证返回结果
-        return true;
+        return response()->json(compact(['result']));
     }
 
     public function test()
@@ -63,7 +63,7 @@ class ZhongQian
         //合同名称
         $contract_name = config('zhongqian.zq_contract_name');
         $json_val = '{"jsonVal":[{"order_sn":"","first_part":"","second_part":"","id_number":"","second_part_phone":"","second_part_address":"","loan_date":"","borrow_amount":"","borrow_days":"","borrow_rate":"","repay_date":"","total_amount":"","Signer1":"","Signer2":"","Signer3":""}]}';
-        $json_val = '{"jsonVal":[]}';
+//        $json_val = '{"jsonVal":[]}';
         $arr = array(
             "zqid" => config('zhongqian.zqid'),  //众签唯一标示
             't_no' => $templateId,
