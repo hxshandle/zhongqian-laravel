@@ -21,13 +21,12 @@ class ZhongQian
     {
         $url = 'http://' . config('zhongqian.zq_domain') . '/a2e';
         $postData = array(
-            "zqid" => '',
+            "zqid" => config('zhongqian.zqid'),
             "name" => $realUserName,
             "idcard" => $userCardId
         );
         $result = Helper::curlPost($url, $postData);
-        // TODO 需要验证返回结果
-        return response()->json(compact(['result']));
+        return $result;
     }
 
     public function test()
@@ -81,12 +80,29 @@ class ZhongQian
         );
     }
 
+    public function autoSign($contract_num, $signer)
+    {
+        $url = 'http://' . config('zhongqian.zq_domain') . '/signAuto';
+        $notify_url = config('zhongqian.auto_sign_notify_callback');
+        $arr=array(
+            "zqid"  => config('zhongqian.zqid'),  //众签唯一标示
+            'no' => $contract_num,
+            'signers' => $signer,
+            "notify_url"=>$notify_url   //异步回调
+        );
+        //签字sign规则
+        $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] =  $ws_sign_val;
+        $content = Helper::curlPost($url, $arr);
+        return $content;
+    }
+
     public function showSign($contractNo, $signer)
     {
-        $url = 'http://' . config('zhongqian.zq_domain') . '/signView';
+        $url = 'http://' . config('zhongqian.zq_domain') . '/mobileSignView';
         $notify_url = config('zhongqian.show_sign_notify_callback');
         $return_url = config('zhongqian.show_sign_return_url');
-        $SIGNATURECODE = "SIGNATURECODE";
+        $SIGNATURECODE = "SIGNATURE";
         $arr = array(
             "zqid" => config('zhongqian.zqid'),  //众签唯一标示
             'no' => $contractNo,

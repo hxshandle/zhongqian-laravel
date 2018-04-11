@@ -15,5 +15,6 @@ return [
     "push_user_notify_callback" => env('ZQ_PUSH_USER_NOTIFY_CALLBACK', '/api/zhongqian/push-user-notify'),
     "push_user_return_url" => env('ZQ_SHOW_SIGN_NOTIFY_CALLBACK', '/api/zhongqian/push-user-return-url'),
     "show_sign_notify_callback" => env('ZQ_SHOW_SIGN_NOTIFY_CALLBACK', '/api/zhongqian/show-sign-notify'),
-    "show_sign_return_url" => env('ZQ_SHOW_SIGN_NOTIFY_CALLBACK', '/api/zhongqian/show-sign-return-url')
+    "show_sign_return_url" => env('ZQ_SHOW_SIGN_NOTIFY_CALLBACK', '/api/zhongqian/show-sign-return-url'),
+    "auto_sign_notify_callback" => env("ZQ_AUTO_SIGN_NOTIFY_CALLBACK", '/api/zhongqian/auto-sign-notify')
 ];
