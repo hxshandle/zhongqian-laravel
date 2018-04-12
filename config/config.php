@@ -18,5 +18,6 @@ return [
     "show_sign_notify_callback" => env('ZQ_SHOW_SIGN_NOTIFY_CALLBACK', '/api/zhongqian/show-sign-notify'),
     "show_sign_return_url" => env('ZQ_SHOW_SIGN_RETURN_URL', '/api/zhongqian/show-sign-return-url'),
     "auto_sign_notify_callback" => env("ZQ_AUTO_SIGN_NOTIFY_CALLBACK", '/api/zhongqian/auto-sign-notify'),
-    "completion_contract_notify_callback" => env('ZQ_COMPLETION_CONTRACT_NOTIFY_CALLBACK', '/api/zhongqian/completion-contract-notify')
+    "completion_contract_notify_callback" => env('ZQ_COMPLETION_CONTRACT_NOTIFY_CALLBACK', '/api/zhongqian/completion-contract-notify'),
+    "download_contract_img_notify_callback" => env('ZQ_DOWNLOAD_CONTRACT_IMG_NOTIFY_CALLBACK', '/api/zhongqian/download-contract-img-notify')
 ];

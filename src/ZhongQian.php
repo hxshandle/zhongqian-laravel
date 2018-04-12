@@ -30,7 +30,7 @@ class ZhongQian
         $sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
         $arr['sign_val'] = $sign_val;
         $result = Helper::curlPost($url, $arr);
-        return $result;
+        return json_decode($result);
     }
 
     public function test()
@@ -56,7 +56,7 @@ class ZhongQian
         //得到结果
         $url = 'http://' . config('zhongqian.zq_domain') . '/personReg';
         $content = Helper::curlPost($url, $arr);
-        return $content;
+        return json_decode($content);
     }
 
     public function createContractByTempateId($templateId, $userCode, $json_val = '{"jsonVal":[]}')
@@ -78,7 +78,7 @@ class ZhongQian
         $content = Helper::curlPost($url, $arr);
         return array(
             "contract_no" => $contract_num,
-            "create_status" => $content
+            "create_status" => json_decode($content)
         );
     }
 
@@ -96,7 +96,7 @@ class ZhongQian
         $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
         $arr['sign_val'] =  $ws_sign_val;
         $content = Helper::curlPost($url, $arr);
-        return $content;
+        return json_decode($content);
     }
 
     public function showSign($contractNo, $signer)
@@ -164,17 +164,18 @@ class ZhongQian
     public function downloadContractImage($contract_no)
     {
         $url = 'http://' . config('zhongqian.zq_domain') . '/getImg';
+        $notify_url = config('download_contract_img_notify_callback');
         //组合接口需要的参数
         $arr=array(
-            "zqid"  => $config ->get_zqid(),  //众签唯一标示
+            "zqid"  =>config('zhongqian.zqid'),
             'no' => $contract_no,
             "notify_url"=>$notify_url,   //异步回调
-            "return_url"=>$return_url,   //同步可省略
         );
         //签字sign规则
         $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
         $arr['sign_val'] =  $ws_sign_val;
         $content = Helper::curlPost($url, $arr);
-        return $content;
+        $result = json_decode($content);
+        return $result;
     }
 }
