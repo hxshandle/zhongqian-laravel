@@ -20,12 +20,16 @@ class ZhongQian
     public function verifyUserId($realUserName, $userCardId)
     {
         $url = 'http://' . config('zhongqian.zq_domain') . '/a2e';
-        $postData = array(
+        $url = 'http://test.sign.zqsign.com/zqsign-web-identify/test/a2e';
+        $arr = array(
             "zqid" => config('zhongqian.zqid'),
             "name" => $realUserName,
+            "order_no" => Helper::generateSN(),
             "idcard" => $userCardId
         );
-        $result = Helper::curlPost($url, $postData);
+        $sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] = $sign_val;
+        $result = Helper::curlPost($url, $arr);
         return $result;
     }
 
