@@ -55,14 +55,12 @@ class ZhongQian
         return $content;
     }
 
-    public function createContractByTempateId($templateId, $userCode, $json = '')
+    public function createContractByTempateId($templateId, $userCode, $json_val = '{"jsonVal":[]}')
     {
         //合同编号
         $contract_num = Helper::generateSN();
         //合同名称
         $contract_name = config('zhongqian.zq_contract_name');
-        $json_val = '{"jsonVal":[{"order_sn":"","first_part":"","second_part":"","id_number":"","second_part_phone":"","second_part_address":"","loan_date":"","borrow_amount":"","borrow_days":"","borrow_rate":"","repay_date":"","total_amount":"","Signer1":"","Signer2":"","Signer3":""}]}';
-//        $json_val = '{"jsonVal":[]}';
         $arr = array(
             "zqid" => config('zhongqian.zqid'),  //众签唯一标示
             't_no' => $templateId,
@@ -117,5 +115,62 @@ class ZhongQian
             "data" => $arr,
             "url" => $url
         );
+    }
+
+    /**
+     * 返回代码为0表示成功
+     * @param $userCode
+     * @param $imgBase64
+     * @return mixed
+     */
+
+    public function signatureChange($userCode, $imgBase64)
+    {
+        $url = 'http://' . config('zhongqian.zq_domain') . '/signatureChange';
+        $arr=array(
+            "zqid"  => config('zhongqian.zqid'),
+            'user_code' => $userCode,
+            'signature' => $imgBase64
+        );
+        //签字sign规则
+        $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] =  $ws_sign_val;
+        $content = Helper::curlPost($url, $arr);
+        return $content;
+    }
+
+
+
+    public function completionContract($contract_no)
+    {
+        $url = 'http://' . config('zhongqian.zq_domain') . '/completionContract';
+        $notify_url = config('zhongqian.completion_contract_notify_callback');
+        $arr=array(
+            "zqid"  => config('zhongqian.zqid'),
+            'no' => $contract_no,
+            "notify_url"=>$notify_url   //异步回调
+        );
+        //签字sign规则
+        $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] =  $ws_sign_val;
+        $content = Helper::curlPost($url, $arr);
+        return $content;
+    }
+
+    public function downloadContractImage($contract_no)
+    {
+        $url = 'http://' . config('zhongqian.zq_domain') . '/getImg';
+        //组合接口需要的参数
+        $arr=array(
+            "zqid"  => $config ->get_zqid(),  //众签唯一标示
+            'no' => $contract_no,
+            "notify_url"=>$notify_url,   //异步回调
+            "return_url"=>$return_url,   //同步可省略
+        );
+        //签字sign规则
+        $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] =  $ws_sign_val;
+        $content = Helper::curlPost($url, $arr);
+        return $content;
     }
 }
