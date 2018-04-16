@@ -59,7 +59,7 @@ class ZhongQian
         return json_decode($content);
     }
 
-    public function createContractByTempateId($templateId, $userCode, $json_val = '{"jsonVal":[]}')
+    public function createContractByTempateId($templateId, $json_val = '{"jsonVal":[]}')
     {
         //合同编号
         $contract_num = Helper::generateSN();
