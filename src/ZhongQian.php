@@ -59,6 +59,28 @@ class ZhongQian
         return json_decode($content);
     }
 
+    public function pushCompanyToZhongQian($userCode, $contact, $name, $address, $mobile, $certificate)
+    {
+        $arr = array(
+            "contact"=>$contact,
+            "name"=>$name,
+            "mobile"=>$mobile,   //联系人电话
+            "user_type"=> 0,   //用户类型  0企业  1个人
+            "zqid"=> config('zhongqian.zqid'),  //众签唯一标示
+            "user_code"=>$userCode,  //用户唯一标示
+            "certificate"=>$certificate,  //社会统一代码或营业执照号码
+            "address"=>$address,
+            "notify_url" => config('zhongqian.push_user_notify_callback')   //异步回调
+//            "return_url" => $return_url   //同步可省略
+        );
+        $sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
+        $arr['sign_val'] = $sign_val;
+        //得到结果
+        $url = 'http://' . config('zhongqian.zq_domain') . '/entpReg';
+        $content = Helper::curlPost($url, $arr);
+        return json_decode($content);
+    }
+
     public function createContractByTempateId($templateId, $json_val = '{"jsonVal":[]}')
     {
         //合同编号
