@@ -20,7 +20,7 @@ class ZhongQian
     public function verifyUserId($realUserName, $userCardId)
     {
         $url = 'http://' . config('zhongqian.zq_domain') . '/a2e';
-        $url = 'http://test.sign.zqsign.com/zqsign-web-identify/test/a2e';
+//        $url = 'http://test.sign.zqsign.com/zqsign-web-identify/test/a2e';
         $arr = array(
             "zqid" => config('zhongqian.zqid'),
             "name" => $realUserName,
