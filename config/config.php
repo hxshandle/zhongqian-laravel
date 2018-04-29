@@ -6,6 +6,7 @@
  * Time: 10:18 AM
  */
 return [
+    "zq_verify_user_url" => env('ZQ_VERIFY_USER_URL', 'http://addition.zqsign.com/a2e'),
     "private_key" => env('ZQ_PRIVATE_KEY', null),
     "public_key" => env('ZQ_PUBLIC_KEY', null),
     "contract_template_id" => env('ZQ_CONTRACT_TEMPLATE_ID', 'ca2f59ae26ca44c8b2af90f922089280'),
