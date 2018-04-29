@@ -153,11 +153,11 @@ class ZhongQian
     public function signatureChange($userCode, $imgBase64)
     {
         $url = 'http://' . config('zhongqian.zq_domain') . '/signatureChange';
-        $base64 = base64_encode(file_get_contents(public_path('img/test.jpg')));
+//        $base64 = base64_encode(file_get_contents(public_path('img/test.jpg')));
         $arr=array(
             "zqid"  => config('zhongqian.zqid'),
             'user_code' => $userCode,
-            'signature' => $base64
+            'signature' => $imgBase64
         );
         //签字sign规则
         $ws_sign_val = Helper::zqSign($arr, config('zhongqian.private_key'));
